@@ -1,13 +1,21 @@
 {
   "MechTags": {
     "items": [
-      "unit_jumpOK",
       "unit_release",
       "unit_mech",
       "unit_light",
       "unit_lance_tank",
       "unit_role_brawler",
       "unit_urbie",
+      "unit_range_medium",
+      "unit_range_short",
+      "unit_jumpOK",
+      "unit_speed_low",
+      "unit_armor_high",
+      "Liao",
+      "TaurianConcordat",
+      "MagistracyOfCanopus",
+      "unit_common",
       "unit_madlabs",
       "unit_components_plusplusplus"
     ],

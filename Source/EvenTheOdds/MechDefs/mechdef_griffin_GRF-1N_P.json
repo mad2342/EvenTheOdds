@@ -1,8 +1,6 @@
 {
   "MechTags": {
     "items": [
-      "unit_indirectFire",
-      "unit_jumpOK",
       "unit_release",
       "unit_mech",
       "unit_medium",
@@ -10,6 +8,18 @@
       "unit_lance_support",
       "unit_lance_vanguard",
       "unit_role_sniper",
+      "unit_range_long",
+      "unit_indirectFire",
+      "unit_jumpOK",
+      "unit_hot",
+      "Davion",
+      "Kurita",
+      "NotLiao",
+      "Marik",
+      "Steiner",
+      "MagistracyOfCanopus",
+      "TaurianConcordat",
+      "unit_common",
       "unit_madlabs",
       "unit_components_plus"
     ],

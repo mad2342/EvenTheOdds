@@ -1,12 +1,19 @@
 {
   "MechTags": {
     "items": [
-      "unit_jumpOK",
       "unit_release",
       "unit_mech",
       "unit_assault",
       "unit_lance_tank",
-      "unit_role_brawler",
+      "unit_role_sniper",
+      "unit_range_long",
+      "unit_indirectFire",
+      "unit_jumpOK",
+      "unit_speed_high",
+      "Davion",
+      "NotKurita",
+      "NotMarik",
+      "NotMagistracyOfCanopus",
       "unit_madlabs",
       "unit_components_plusplusplus"
     ],

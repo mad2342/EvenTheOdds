@@ -1,12 +1,18 @@
 {
   "MechTags": {
     "items": [
-      "unit_jumpOK",
       "unit_mech",
       "unit_medium",
       "unit_lance_assassin",
       "unit_role_brawler",
       "unit_release",
+      "unit_range_medium",
+      "unit_jumpOK",
+      "unit_hot",
+      "unit_armor_high",
+      "unit_speed_low",
+      "Davion",
+      "Liao",
       "unit_madlabs",
       "unit_components_plusplus"
     ],

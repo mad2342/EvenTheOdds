@@ -8,6 +8,13 @@
       "unit_ready",
       "unit_lance_tank",
       "unit_role_brawler",
+      "unit_range_medium",
+      "unit_indirectFire",
+      "unit_hot",
+      "unit_speed_low",
+      "Davion",
+      "NotMarik",
+      "NotMagistracyOfCanopus",
       "unit_madlabs",
       "unit_components_plusplusplus"
     ],

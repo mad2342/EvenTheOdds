@@ -4,10 +4,15 @@
       "unit_mech",
       "unit_medium",
       "unit_role_brawler",
-      "unit_lance_assassin",
-      "unit_jumpOK",
       "unit_release",
       "unit_dlc",
+      "unit_hatchetman",
+      "unit_range_medium",
+      "unit_jumpOK",
+      "unit_hot",
+      "unit_speed_low",
+      "Davion",
+      "Steiner",
       "unit_madlabs",
       "unit_components_plusplusplus"
     ],
@@ -28,11 +33,12 @@
     "Icon": "uixTxrIcon_hatchetman"
   },
   "simGameMechPartCost": 622000,
-  "RequiredToSpawnCompanyTags": {
-    "items": [],
-    "tagSetSourceFile": ""
-  },
-  "MinAppearanceDate": null,
+	"RequiredToSpawnCompanyTags": {
+	    "items": [
+		    "flashpoint_longRoad_complete"
+		]
+	},
+  "MinAppearanceDate" : "3025-06-28T00:00:00Z",
   "Version": 1,
   "Locations": [
     {

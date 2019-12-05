@@ -144,7 +144,7 @@ namespace EvenTheOdds.Patches
                 }
                 else
                 {
-                    Logger.LogLine("[Contract_CreateAndAddMechPart_PREFIX] Handling MechPart of MechDef (" + m.Description.Id + ") which belongs to a custom ETO unit. Normalizing back to STOCK...");
+                    Logger.LogLine("[Contract_CreateAndAddMechPart_PREFIX] Handling MechPart of MechDef (" + m.Description.Id + ") which belongs to a custom unit. Normalizing back to STOCK...");
 
                     //SimGameState simGameState = __instance.BattleTechGame.Simulation;
                     string currentMechDefId = m.Description.Id;

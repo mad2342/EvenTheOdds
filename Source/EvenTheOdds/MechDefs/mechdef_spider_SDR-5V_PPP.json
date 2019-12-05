@@ -1,12 +1,19 @@
 {
   "MechTags": {
     "items": [
-      "unit_jumpOK",
       "unit_mech",
       "unit_light",
       "unit_lance_vanguard",
       "unit_role_scout",
       "unit_release",
+      "unit_range_medium",
+      "unit_jumpOK",
+      "unit_hot",
+      "unit_speed_high",
+      "unit_armor_low",
+      "Kurita",
+      "Marik",
+      "NotTaurianConcordat",
       "unit_madlabs",
       "unit_components_plusplusplus"
     ],
