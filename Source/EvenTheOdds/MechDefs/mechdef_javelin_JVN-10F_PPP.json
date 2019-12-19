@@ -25,9 +25,9 @@
     "Purchasable": false,
     "Manufacturer": null,
     "Model": null,
-    "UIName": "Fire Javelin JVN-10F",
+    "UIName": "Javelin JVN-10F",
     "Id": "mechdef_javelin_JVN-10F_PPP",
-    "Name": "Fire Javelin PPP",
+    "Name": "Javelin PPP",
     "Details": "The JVN-10F is armed with four medium lasers. It's a functional scouting 'Mech, but shines as mobile reinforcement unit because it can provide sustained fire without ammo limitations.",
     "Icon": "uixTxrIcon_javelin"
   },
