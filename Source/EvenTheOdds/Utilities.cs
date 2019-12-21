@@ -173,6 +173,26 @@ namespace EvenTheOdds
         }
 
 
+        public static int GetExtraThreatLevelByTag(TagSet mechTags)
+        {
+            if (mechTags.Contains("unit_components_plusplusplus"))
+            {
+                return 3;
+            }
+            else if (mechTags.Contains("unit_components_plusplus"))
+            {
+                return 2;
+            }
+            else if (mechTags.Contains("unit_components_plus"))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public static int GetExtraThreatLevelFromMechDef(MechDef mechDef, bool log = false)
         {
             int result = 0;
@@ -258,22 +278,6 @@ namespace EvenTheOdds
             }
 
             return result;
-        }
-
-        // Deprecated
-        public static string GetMechTagAccordingToExtraThreatlevel(int threatLevel)
-        {
-            switch(threatLevel)
-            {
-                case 3:
-                    return "unit_components_plusplusplus";
-                case 2:
-                    return "unit_components_plusplus";
-                case 1:
-                    return "unit_components_plus";
-                default:
-                    return "unit_components_neutral";
-            }
         }
 
         public static string GetPilotTypeForMechDef(MechDef mechDef, bool random = false)

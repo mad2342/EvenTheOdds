@@ -138,7 +138,7 @@ namespace EvenTheOdds.Patches
                     Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.CurrentLanceCustomUnitCount: " + Fields.CurrentLanceCustomUnitCount);
                     Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedCustomUnitsPerLance: " + Fields.MaxAllowedCustomUnitsPerLance);
 
-                    int selectedMechsExtraThreatLevel = Utilities.GetExtraThreatLevelFromMechDef(selectedMechDef);
+                    int selectedMechsExtraThreatLevel = Utilities.GetExtraThreatLevelByTag(selectedMechDef.MechTags);
                     Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechsExtraThreatLevel: " + selectedMechsExtraThreatLevel);
 
                     Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedExtraThreatLevelByProgression: " + Fields.MaxAllowedExtraThreatLevelByProgression);
