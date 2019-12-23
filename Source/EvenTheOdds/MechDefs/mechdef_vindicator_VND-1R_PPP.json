@@ -23,7 +23,7 @@
   "ChassisID": "chassisdef_vindicator_VND-1R",
   "HeraldryID": null,
   "Description": {
-    "Cost": 8560000,
+    "Cost": 8240000,
     "Rarity": 6,
     "Purchasable": false,
     "Manufacturer": null,
@@ -34,7 +34,7 @@
     "Details": "Vindicator 1Rs tend to deal their damage at range while moving in for closer attacks. Typically well armored, they're capable of some surprise attacks due to their jump capability and above-average heat efficiency.",
     "Icon": "uixTxrIcon_vindicator"
   },
-  "simGameMechPartCost": 856000,
+  "simGameMechPartCost": 824000,
   "RequiredToSpawnCompanyTags": {
     "items": [],
     "tagSetSourceFile": ""
@@ -283,7 +283,7 @@
     },
     {
       "MountedLocation": "CenterTorso",
-      "ComponentDefID": "Gear_HeatSink_Generic_Thermal-Exchanger-I",
+      "ComponentDefID": "Gear_HeatSink_Generic_Standard",
       "SimGameUID": null,
       "ComponentDefType": "HeatSink",
       "HardpointSlot": -1,

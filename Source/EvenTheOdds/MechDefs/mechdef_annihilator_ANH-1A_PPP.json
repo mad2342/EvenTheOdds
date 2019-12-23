@@ -21,7 +21,7 @@
   "ChassisID": "chassisdef_annihilator_ANH-1A",
   "HeraldryID": null,
   "Description": {
-    "Cost": 15880000,
+    "Cost": 15700000,
     "Rarity": 6,
     "Purchasable": false,
     "Manufacturer": null,
@@ -32,7 +32,7 @@
     "Details": "The Annihilator is an extremely rare 'Mech that is essentially a mobile siege tower. It can kick out more damage than almost any other unit on the field. It's unbelievably slow, though, and poorly armored for its size.",
     "Icon": "uixTxrIcon_annihilator"
   },
-  "simGameMechPartCost": 1588000,
+  "simGameMechPartCost": 1570000,
   "RequiredToSpawnCompanyTags": {
     "items": [],
     "tagSetSourceFile": ""
@@ -303,7 +303,7 @@
     },
     {
       "MountedLocation": "Head",
-      "ComponentDefID": "Gear_HeatSink_Generic_Thermal-Exchanger-III",
+      "ComponentDefID": "Gear_HeatSink_Generic_Thermal-Exchanger-II",
       "SimGameUID": null,
       "ComponentDefType": "HeatSink",
       "HardpointSlot": -1,

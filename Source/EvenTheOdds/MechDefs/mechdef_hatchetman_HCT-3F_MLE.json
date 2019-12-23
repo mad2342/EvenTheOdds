@@ -21,7 +21,7 @@
   "ChassisID": "chassisdef_hatchetman_HCT-3F",
   "HeraldryID": null,
   "Description": {
-    "Cost": 6220000,
+    "Cost": 6540000,
     "Rarity": 5,
     "Purchasable": false,
     "Manufacturer": null,
@@ -29,16 +29,15 @@
     "UIName": "Hatchetman HCT-3F",
     "Id": "mechdef_hatchetman_HCT-3F_MLE",
     "Name": "Hatchetman MLE",
-    "Details": "Hatchetman 3Fs are the king of the close quarters fight. Packing high impact short range weaponry, and a unique melee Hatchet, any target is in danger when close to the Hatchetman. The Hatchetmans lighter armor requires it to rely on maneuvering and ambushing to stay in the fight.",
+    "Details": "Hatchetman 3Fs are the king of the close quarters fight. Packing high impact short range weaponry, and a unique melee Hatchet, any target is in danger when close to the Hatchetman. The Hatchetman's lighter armor requires it to rely on maneuvering and ambushing to stay in the fight.",
     "Icon": "uixTxrIcon_hatchetman"
   },
-  "simGameMechPartCost": 622000,
-	"RequiredToSpawnCompanyTags": {
-	    "items": [
-		    "flashpoint_longRoad_complete"
-		]
-	},
-  "MinAppearanceDate" : "3025-06-28T00:00:00Z",
+  "simGameMechPartCost": 654000,
+  "RequiredToSpawnCompanyTags": {
+    "items": [],
+    "tagSetSourceFile": ""
+  },
+  "MinAppearanceDate": null,
   "Version": 1,
   "Locations": [
     {
@@ -231,6 +230,17 @@
       "SimGameUID": null,
       "ComponentDefType": "AmmunitionBox",
       "HardpointSlot": -1,
+      "GUID": null,
+      "DamageLevel": "Functional",
+      "prefabName": null,
+      "hasPrefabName": false
+    },
+    {
+      "MountedLocation": "RightTorso",
+      "ComponentDefID": "Weapon_Laser_MediumLaser_3-Diverse_Optics",
+      "SimGameUID": null,
+      "ComponentDefType": "Weapon",
+      "HardpointSlot": 1,
       "GUID": null,
       "DamageLevel": "Functional",
       "prefabName": null,

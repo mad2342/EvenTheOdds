@@ -9,7 +9,6 @@
       "unit_role_brawler",
       "unit_release",
       "unit_range_short",
-      "unit_indirectFire",
       "unit_speed_high",
       "Kurita",
       "NotLiao",
@@ -25,7 +24,7 @@
   "ChassisID": "chassisdef_dragon_DRG-1N",
   "HeraldryID": null,
   "Description": {
-    "Cost": 8520000,
+    "Cost": 8320000,
     "Rarity": 6,
     "Purchasable": false,
     "Manufacturer": null,
@@ -36,7 +35,7 @@
     "Details": "The Dragon 1N is a beefy machine that can take a serious beating but tends to be a bit light on weaponry. It moves fast for a heavy 'Mech, though, which makes it well suited to closing for Melee attacks against slower targets.",
     "Icon": "uixTxrIcon_dragon"
   },
-  "simGameMechPartCost": 852000,
+  "simGameMechPartCost": 832000,
   "RequiredToSpawnCompanyTags": {
     "items": [],
     "tagSetSourceFile": ""
@@ -130,30 +129,8 @@
       "hasPrefabName": false
     },
     {
-      "MountedLocation": "CenterTorso",
-      "ComponentDefID": "Gear_Gyro_Coventry_Mark-95",
-      "SimGameUID": null,
-      "ComponentDefType": "Upgrade",
-      "HardpointSlot": -1,
-      "GUID": null,
-      "DamageLevel": "Functional",
-      "prefabName": null,
-      "hasPrefabName": false
-    },
-    {
       "MountedLocation": "Head",
       "ComponentDefID": "Gear_Cockpit_Ceres_Metals_Hardened",
-      "SimGameUID": null,
-      "ComponentDefType": "Upgrade",
-      "HardpointSlot": -1,
-      "GUID": null,
-      "DamageLevel": "Functional",
-      "prefabName": null,
-      "hasPrefabName": false
-    },
-    {
-      "MountedLocation": "RightArm",
-      "ComponentDefID": "Gear_Actuator_Coventry_B60-Extended",
       "SimGameUID": null,
       "ComponentDefType": "Upgrade",
       "HardpointSlot": -1,
@@ -196,6 +173,17 @@
       "hasPrefabName": false
     },
     {
+      "MountedLocation": "RightArm",
+      "ComponentDefID": "Gear_Actuator_Friedhof_Perseus",
+      "SimGameUID": null,
+      "ComponentDefType": "Upgrade",
+      "HardpointSlot": -1,
+      "GUID": null,
+      "DamageLevel": "Functional",
+      "prefabName": null,
+      "hasPrefabName": false
+    },
+    {
       "MountedLocation": "LeftArm",
       "ComponentDefID": "Gear_Actuator_Friedhof_Gargantuan",
       "SimGameUID": null,
@@ -207,8 +195,30 @@
       "hasPrefabName": false
     },
     {
+      "MountedLocation": "CenterTorso",
+      "ComponentDefID": "Weapon_SRM_SRM6_3-Valiant",
+      "SimGameUID": null,
+      "ComponentDefType": "Weapon",
+      "HardpointSlot": 0,
+      "GUID": null,
+      "DamageLevel": "Functional",
+      "prefabName": null,
+      "hasPrefabName": false
+    },
+    {
+      "MountedLocation": "CenterTorso",
+      "ComponentDefID": "Ammo_AmmunitionBox_Generic_SRM",
+      "SimGameUID": null,
+      "ComponentDefType": "AmmunitionBox",
+      "HardpointSlot": -1,
+      "GUID": null,
+      "DamageLevel": "Functional",
+      "prefabName": null,
+      "hasPrefabName": false
+    },
+    {
       "MountedLocation": "RightArm",
-      "ComponentDefID": "Gear_Actuator_Friedhof_Perseus",
+      "ComponentDefID": "Gear_Actuator_Coventry_Alpha",
       "SimGameUID": null,
       "ComponentDefType": "Upgrade",
       "HardpointSlot": -1,
