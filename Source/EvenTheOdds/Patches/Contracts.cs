@@ -54,6 +54,7 @@ namespace EvenTheOdds.Patches
         }
     }
 
+    // Info
     [HarmonyPatch(typeof(SimGameState), "GetAllCurrentlySelectableContracts")]
     public static class SimGameState_GetAllCurrentlySelectableContracts_Patch
     {

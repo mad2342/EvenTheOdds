@@ -21,7 +21,7 @@
   "ChassisID": "chassisdef_banshee_BNC-3E",
   "HeraldryID": null,
   "Description": {
-    "Cost": 14080000,
+    "Cost": 14140000,
     "Rarity": 8,
     "Purchasable": false,
     "Manufacturer": null,
@@ -32,7 +32,7 @@
     "Details": "The Banshee 3E was originally designed for close combat, with better speed than most other assault 'Mechs. While it has heavy armor and powerful Melee attack capability, its firepower is severely lacking and it can still be flanked by lighter units.",
     "Icon": "uixTxrIcon_banshee"
   },
-  "simGameMechPartCost": 1408000,
+  "simGameMechPartCost": 1414000,
   "RequiredToSpawnCompanyTags": {
     "items": [],
     "tagSetSourceFile": ""
@@ -126,28 +126,6 @@
       "hasPrefabName": false
     },
     {
-      "MountedLocation": "RightArm",
-      "ComponentDefID": "Gear_Actuator_Friedhof_Gargantuan",
-      "SimGameUID": null,
-      "ComponentDefType": "Upgrade",
-      "HardpointSlot": -1,
-      "GUID": null,
-      "DamageLevel": "Functional",
-      "prefabName": null,
-      "hasPrefabName": false
-    },
-    {
-      "MountedLocation": "LeftArm",
-      "ComponentDefID": "Gear_Actuator_Friedhof_Gargantuan",
-      "SimGameUID": null,
-      "ComponentDefType": "Upgrade",
-      "HardpointSlot": -1,
-      "GUID": null,
-      "DamageLevel": "Functional",
-      "prefabName": null,
-      "hasPrefabName": false
-    },
-    {
       "MountedLocation": "RightTorso",
       "ComponentDefID": "Weapon_PPC_PPC_3-Tiegart",
       "SimGameUID": null,
@@ -194,6 +172,28 @@
     {
       "MountedLocation": "Head",
       "ComponentDefID": "Gear_Cockpit_Majesty_M_M_180KL",
+      "SimGameUID": null,
+      "ComponentDefType": "Upgrade",
+      "HardpointSlot": -1,
+      "GUID": null,
+      "DamageLevel": "Functional",
+      "prefabName": null,
+      "hasPrefabName": false
+    },
+    {
+      "MountedLocation": "RightArm",
+      "ComponentDefID": "Gear_Actuator_Friedhof_Colossus",
+      "SimGameUID": null,
+      "ComponentDefType": "Upgrade",
+      "HardpointSlot": -1,
+      "GUID": null,
+      "DamageLevel": "Functional",
+      "prefabName": null,
+      "hasPrefabName": false
+    },
+    {
+      "MountedLocation": "LeftArm",
+      "ComponentDefID": "Gear_Actuator_Friedhof_Colossus",
       "SimGameUID": null,
       "ComponentDefType": "Upgrade",
       "HardpointSlot": -1,
