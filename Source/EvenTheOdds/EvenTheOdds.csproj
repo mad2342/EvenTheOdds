@@ -66,7 +66,7 @@
     <None Include="README.md" />
     <None Include="PilotDefs\*.json" />
     <None Include="MechDefs\*.json" />
-    <None Include="StreamingAssets\data\contracts\**\*.json" />
+    <None Include="StreamingAssets\data\**\*.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -77,7 +77,7 @@ xcopy $(ProjectDir)README.md $(SolutionDir)..\Release\$(TargetName)\ /Y
 xcopy $(ProjectDir)README.md $(SolutionDir)..\ /Y
 xcopy $(ProjectDir)PilotDefs\*.json $(SolutionDir)..\Release\$(TargetName)\PilotDefs\ /Y
 xcopy $(ProjectDir)MechDefs\*.json $(SolutionDir)..\Release\$(TargetName)\MechDefs\ /Y
-xcopy $(ProjectDir)StreamingAssets\data\contracts\* $(SolutionDir)..\Release\$(TargetName)\StreamingAssets\data\contracts\ /Y /S
+xcopy $(ProjectDir)StreamingAssets\data\* $(SolutionDir)..\Release\$(TargetName)\StreamingAssets\data\ /Y /S
     </PostBuildEvent>
   </PropertyGroup>
 </Project>
