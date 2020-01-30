@@ -50,10 +50,12 @@
     <Reference Include="UnityEngine.UI" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Link\MadLogger.cs">
+      <Link>MadLogger.cs</Link>
+    </Compile>
     <Compile Include="Patches\Contracts.cs" />
     <Compile Include="Holder.cs" />
     <Compile Include="EvenTheOdds.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Patches\Salvage.cs" />
     <Compile Include="Patches\Spawns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
