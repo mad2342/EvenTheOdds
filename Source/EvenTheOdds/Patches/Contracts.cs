@@ -18,23 +18,23 @@ namespace EvenTheOdds.Patches
 
         public static bool Prefix(SimGameState __instance, int baseDiff, out int minDiff, out int maxDiff)
         {
-            Logger.LogLine("----------------------------------------------------------------------------------------------------");
-            Logger.LogLine("[SimGameState_GetDifficultyRangeForContract_PREFIX] SimGameState.Constants.Story.ContractDifficultyVariance: " + __instance.Constants.Story.ContractDifficultyVariance);
+            Logger.Debug("----------------------------------------------------------------------------------------------------");
+            Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] SimGameState.Constants.Story.ContractDifficultyVariance: " + __instance.Constants.Story.ContractDifficultyVariance);
             
             //int overrideContractDifficultyVariance = Utilities.GetMaxAllowedContractDifficultyVariance(__instance.SimGameMode, __instance.CompanyTags);
-            //Logger.LogLine("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariance: " + overrideContractDifficultyVariance);
+            //Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariance: " + overrideContractDifficultyVariance);
             //__instance.Constants.Story.ContractDifficultyVariance = overrideContractDifficultyVariance;
 
             int[] overrideContractDifficultyVariances = Utilities.GetMaxAllowedContractDifficultyVariances(__instance.SimGameMode, __instance.CompanyTags);
-            Logger.LogLine("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariances[0]: " + overrideContractDifficultyVariances[0]);
-            Logger.LogLine("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariances[1]: " + overrideContractDifficultyVariances[1]);
+            Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariances[0]: " + overrideContractDifficultyVariances[0]);
+            Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariances[1]: " + overrideContractDifficultyVariances[1]);
 
 
             minDiff = Mathf.Max(1, baseDiff - overrideContractDifficultyVariances[0]);
             maxDiff = Mathf.Max(1, baseDiff + overrideContractDifficultyVariances[1]);
-            Logger.LogLine("[SimGameState_GetDifficultyRangeForContract_PREFIX] baseDiff: " + baseDiff);
-            Logger.LogLine("[SimGameState_GetDifficultyRangeForContract_PREFIX] minDiff: " + minDiff);
-            Logger.LogLine("[SimGameState_GetDifficultyRangeForContract_PREFIX] maxDiff: " + maxDiff);
+            Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] baseDiff: " + baseDiff);
+            Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] minDiff: " + minDiff);
+            Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] maxDiff: " + maxDiff);
 
             // Skip original method as it would override minDiff/maxDiff again (of course)
             return false;
@@ -47,10 +47,10 @@ namespace EvenTheOdds.Patches
     {
         public static void Postfix(StarSystem __instance, ref int __result)
         {
-            Logger.LogLine("----------------------------------------------------------------------------------------------------");
-            Logger.LogLine("[StarSystem_GetSystemMaxContracts_POSTFIX] StarSystem.Def.UseMaxContractOverride: " + __instance.Def.UseMaxContractOverride);
-            Logger.LogLine("[StarSystem_GetSystemMaxContracts_POSTFIX] StarSystem.Def.MaxContractOverride: " + __instance.Def.MaxContractOverride);
-            Logger.LogLine("[StarSystem_GetSystemMaxContracts_POSTFIX] StarSystem.Sim.Constants.Story.MaxContractsPerSystem: " + __instance.Sim.Constants.Story.MaxContractsPerSystem);
+            Logger.Debug("----------------------------------------------------------------------------------------------------");
+            Logger.Debug("[StarSystem_GetSystemMaxContracts_POSTFIX] StarSystem.Def.UseMaxContractOverride: " + __instance.Def.UseMaxContractOverride);
+            Logger.Debug("[StarSystem_GetSystemMaxContracts_POSTFIX] StarSystem.Def.MaxContractOverride: " + __instance.Def.MaxContractOverride);
+            Logger.Debug("[StarSystem_GetSystemMaxContracts_POSTFIX] StarSystem.Sim.Constants.Story.MaxContractsPerSystem: " + __instance.Sim.Constants.Story.MaxContractsPerSystem);
         }
     }
 
@@ -62,7 +62,7 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                Logger.LogLine("----------------------------------------------------------------------------------------------------");
+                Logger.Debug("----------------------------------------------------------------------------------------------------");
 
                 // Campaign
                 //int currentSystemDifficulty = __instance.CurSystem.Def.GetDifficulty(SimGameState.SimGameType.KAMEA_CAMPAIGN);
@@ -76,40 +76,40 @@ namespace EvenTheOdds.Patches
                 int minDifficulty = Mathf.Max(1, baseDifficulty - contractDifficultyVariances[0]);
                 int maxDifficulty = Mathf.Max(1, baseDifficulty + contractDifficultyVariances[1]);
 
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] currentSystemDifficulty: " + currentSystemDifficulty);
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] globalDifficulty: " + globalDifficulty);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] currentSystemDifficulty: " + currentSystemDifficulty);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] globalDifficulty: " + globalDifficulty);
 
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] ---");
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] ---");
                 int normalizedDifficulty = Utilities.GetNormalizedGlobalDifficulty(__instance);
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] normalizedDifficulty: " + normalizedDifficulty);
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] ---");
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] normalizedDifficulty: " + normalizedDifficulty);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] ---");
 
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] baseDifficulty: " + baseDifficulty);
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] contractDifficultyVariances[0]: " + contractDifficultyVariances[0]);
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] contractDifficultyVariances[1]: " + contractDifficultyVariances[1]);
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] minDifficulty: " + minDifficulty);
-                Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] maxDifficulty: " + maxDifficulty);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] baseDifficulty: " + baseDifficulty);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] contractDifficultyVariances[0]: " + contractDifficultyVariances[0]);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] contractDifficultyVariances[1]: " + contractDifficultyVariances[1]);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] minDifficulty: " + minDifficulty);
+                Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] maxDifficulty: " + maxDifficulty);
 
                 foreach (Contract contract in __instance.GlobalContracts)
                 {
-                    Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.CurSystem.GlobalContracts: " + contract.Name + "(Difficulty " + contract.Difficulty + ")");
+                    Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.CurSystem.GlobalContracts: " + contract.Name + "(Difficulty " + contract.Difficulty + ")");
                 }
                 foreach (Contract contract in __instance.CurSystem.SystemContracts)
                 {
-                    Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.CurSystem.SystemContracts: " + contract.Name + "(Difficulty " + contract.Difficulty + ")");
+                    Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.CurSystem.SystemContracts: " + contract.Name + "(Difficulty " + contract.Difficulty + ")");
                 }
                 foreach (Contract contract in __instance.CurSystem.SystemBreadcrumbs)
                 {
-                    Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.CurSystem.SystemBreadcrumbs: " + contract.Name + "(Difficulty " + contract.Difficulty + ")");
+                    Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.CurSystem.SystemBreadcrumbs: " + contract.Name + "(Difficulty " + contract.Difficulty + ")");
                 }
                 if (__instance.HasTravelContract)
                 {
-                    Logger.LogLine("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.ActiveTravelContract: " + __instance.ActiveTravelContract.Name + "(Difficulty " + __instance.ActiveTravelContract.Difficulty + ")");
+                    Logger.Debug("[SimGameState_GetAllCurrentlySelectableContracts_POSTFIX] SimGameState.ActiveTravelContract: " + __instance.ActiveTravelContract.Name + "(Difficulty " + __instance.ActiveTravelContract.Difficulty + ")");
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }

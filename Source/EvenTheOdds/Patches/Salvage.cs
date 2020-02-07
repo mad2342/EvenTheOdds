@@ -16,14 +16,14 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                Logger.LogLine("----------------------------------------------------------------------------------------------------");
-                Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] Handling def: " + def.Description.Id + "(ComponentType: " + def.ComponentType + ")");
+                Logger.Debug("----------------------------------------------------------------------------------------------------");
+                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] Handling def: " + def.Description.Id + "(ComponentType: " + def.ComponentType + ")");
 
                 // If rare upgrades are found, just cancel original method completely -> Skip adding anything to salvage for this component
                 // Rare upgrades will still be added to salvage by Vanillas Replacement-RNG on anything non-weapon
                 if (def.ComponentType == ComponentType.Upgrade)
                 {
-                    Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] Component is an upgrade, skipping original method (BUT STILL calling Postfixes if existent!)");
+                    Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] Component is an upgrade, skipping original method (BUT STILL calling Postfixes if existent!)");
                     return false;
                 }
 
@@ -51,12 +51,12 @@ namespace EvenTheOdds.Patches
                 //float keepInitialRareWeaponChanceMin = Fields.KeepInitialRareWeaponChanceMin;
                 // Minimum chance by contract difficulty
                 float keepInitialRareWeaponChanceMin = (float)contractDifficulty / 100;
-                Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceMin: " + keepInitialRareWeaponChanceMin);
+                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceMin: " + keepInitialRareWeaponChanceMin);
                 // Borrowed from Contract.AddWeaponToSalvage()
                 float keepInitialRareWeaponChanceProgression = ((float)contractDifficulty + simGameConstants.Salvage.VeryRareWeaponChance) / simGameConstants.Salvage.WeaponChanceDivisor;
-                Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceProgression: " + keepInitialRareWeaponChanceProgression);
+                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceProgression: " + keepInitialRareWeaponChanceProgression);
                 float keepInitialRareWeaponChance = Math.Max(keepInitialRareWeaponChanceMin, keepInitialRareWeaponChanceProgression);
-                Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChance: " + keepInitialRareWeaponChance);
+                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChance: " + keepInitialRareWeaponChance);
 
 
                 float keepInitialRareWeaponRoll = simGameState.NetworkRandom.Float(0f, 1f);
@@ -65,26 +65,26 @@ namespace EvenTheOdds.Patches
                 // Currently handled rare weapons should pass into original method as is
                 if (keepInitialRareWeapon)
                 {
-                    Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] (" + def.Description.Id + ") passes into original method");
+                    Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + def.Description.Id + ") passes into original method");
                     return true;
                 }
 
                 // Resetting rare weapon to its stock version if above check to potentially keep it fails
                 WeaponDef weaponDef = def as WeaponDef;
                 string weaponOriginalId = def.Description.Id;
-                //Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponOriginalId + ") is going to be replaced by its stock version");
+                //Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponOriginalId + ") is going to be replaced by its stock version");
                 string weaponStockId = def.ComponentType.ToString() + "_" + weaponDef.Type.ToString() + "_" + weaponDef.WeaponSubType.ToString() + "_0-STOCK";
-                //Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponStockId + ") is current weapons stock version");
+                //Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponStockId + ") is current weapons stock version");
 
                 // Set
                 def = ___dataManager.WeaponDefs.Get(weaponStockId);
-                Logger.LogLine("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponOriginalId + ") was replaced with stock version (" + def.Description.Id + ")");
+                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponOriginalId + ") was replaced with stock version (" + def.Description.Id + ")");
 
                 return true;
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
                 return true;
             }
         }
@@ -94,10 +94,10 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                //Logger.LogLine("[Contract_AddMechComponentToSalvage_POSTFIX] Checking def: " + def.Description.Id);
+                //Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] Checking def: " + def.Description.Id);
 
                 // Apart from MechComponents also MechParts fill this List
-                //Logger.LogLine("[Contract_AddMechComponentToSalvage_POSTFIX] ___finalPotentialSalvage.Count: " + ___finalPotentialSalvage.Count);
+                //Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] ___finalPotentialSalvage.Count: " + ___finalPotentialSalvage.Count);
 
                 // If prefix returns false this is empty on first call. Need to check first
                 if (___finalPotentialSalvage != null && ___finalPotentialSalvage.Count > 0)
@@ -108,24 +108,24 @@ namespace EvenTheOdds.Patches
                     // Check only rare weapons
                     if (def.ComponentType == ComponentType.Weapon && def.Description.Rarity > 0)
                     {
-                        Logger.LogLine("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") passed into original method");
+                        Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") passed into original method");
                     }
                     // Check if method DID transform components
                     if (lastAddedMechComponent != null && (def.Description.Id != lastAddedMechComponent.Description.Id))
                     {
-                        Logger.LogLine("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") was changed to (" + lastAddedMechComponent.Description.Id + ")");
+                        Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") was changed to (" + lastAddedMechComponent.Description.Id + ")");
                     }
                     // Check all final salvage
                     if (lastAddedMechComponent != null)
                     //if (lastAddedMechComponent != null && lastAddedMechComponent.Description.Rarity > 0)
                     {
-                        Logger.LogLine("[Contract_AddMechComponentToSalvage_POSTFIX] (" + lastAddedMechComponent.Description.Id + ") was added to salvage");
+                        Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] (" + lastAddedMechComponent.Description.Id + ") was added to salvage");
                     }
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -145,8 +145,8 @@ namespace EvenTheOdds.Patches
                 }
                 else
                 {
-                    Logger.LogLine("----------------------------------------------------------------------------------------------------");
-                    Logger.LogLine("[Contract_CreateAndAddMechPart_PREFIX] Handling MechPart of MechDef (" + m.Description.Id + ") which belongs to a custom unit. Normalizing back to STOCK...");
+                    Logger.Debug("----------------------------------------------------------------------------------------------------");
+                    Logger.Debug("[Contract_CreateAndAddMechPart_PREFIX] Handling MechPart of MechDef (" + m.Description.Id + ") which belongs to a custom unit. Normalizing back to STOCK...");
 
                     //SimGameState simGameState = __instance.BattleTechGame.Simulation;
                     string currentMechDefId = m.Description.Id;
@@ -154,12 +154,12 @@ namespace EvenTheOdds.Patches
                     
                     // Replace
                     m = ___dataManager.MechDefs.Get(stockMechDefId);
-                    Logger.LogLine("[Contract_CreateAndAddMechPart_PREFIX] MechDef (" + currentMechDefId + ") was replaced with stock version (" + m.Description.Id + ")");
+                    Logger.Debug("[Contract_CreateAndAddMechPart_PREFIX] MechDef (" + currentMechDefId + ") was replaced with stock version (" + m.Description.Id + ")");
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }

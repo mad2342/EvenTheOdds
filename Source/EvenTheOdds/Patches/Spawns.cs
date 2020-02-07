@@ -15,43 +15,43 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                Logger.LogLine("----------------------------------------------------------------------------------------------------");
-                Logger.LogLine("-------------------------------------------------");
-                Logger.LogLine("-------------------------------");
-                Logger.LogLine("[Contract_Begin_PREFIX] Contract.Name: " + __instance.Name);
-                Logger.LogLine("[Contract_Begin_PREFIX] Contract.Difficulty: " + __instance.Difficulty);
+                Logger.Debug("----------------------------------------------------------------------------------------------------");
+                Logger.Debug("-------------------------------------------------");
+                Logger.Debug("-------------------------------");
+                Logger.Debug("[Contract_Begin_PREFIX] Contract.Name: " + __instance.Name);
+                Logger.Debug("[Contract_Begin_PREFIX] Contract.Difficulty: " + __instance.Difficulty);
 
                 SimGameState simGameState = __instance.BattleTechGame.Simulation;
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.CompanyTags: " + simGameState.CompanyTags);
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.DaysPassed: " + simGameState.DaysPassed);
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.GlobalDifficulty: " + simGameState.GlobalDifficulty);
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.CompanyTags: " + simGameState.CompanyTags);
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.DaysPassed: " + simGameState.DaysPassed);
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.GlobalDifficulty: " + simGameState.GlobalDifficulty);
 
                 //Fields.GlobalDifficulty = (int)simGameState.GlobalDifficulty;
                 Fields.GlobalDifficulty = Utilities.GetNormalizedGlobalDifficulty(simGameState);
-                Logger.LogLine("[Contract_Begin_PREFIX] Fields.GlobalDifficulty: " + Fields.GlobalDifficulty);
+                Logger.Debug("[Contract_Begin_PREFIX] Fields.GlobalDifficulty: " + Fields.GlobalDifficulty);
 
                 Fields.CurrentContractPlusPlusPlusUnits = 0;
 
                 Fields.MaxAllowedExtraThreatLevelByProgression = Utilities.GetMaxAllowedExtraThreatLevelByProgression(simGameState.DaysPassed, simGameState.CompanyTags);
                 Fields.MaxAllowedCustomUnitsPerLance = Utilities.GetMaxAllowedCustomUnitsByProgression(Fields.GlobalDifficulty);
-                Logger.LogLine("[Contract_Begin_PREFIX] Fields.MaxAllowedExtraThreatLevelByProgression: " + Fields.MaxAllowedExtraThreatLevelByProgression);
-                Logger.LogLine("[Contract_Begin_PREFIX] Fields.MaxAllowedCustomUnitsPerLance: " + Fields.MaxAllowedCustomUnitsPerLance);
+                Logger.Debug("[Contract_Begin_PREFIX] Fields.MaxAllowedExtraThreatLevelByProgression: " + Fields.MaxAllowedExtraThreatLevelByProgression);
+                Logger.Debug("[Contract_Begin_PREFIX] Fields.MaxAllowedCustomUnitsPerLance: " + Fields.MaxAllowedCustomUnitsPerLance);
 
                 /*
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.IsCampaign: " + simGameState.IsCampaign);
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.isCareerMode(): " + simGameState.IsCareerMode());
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.TargetSystem.Name: " + simGameState.TargetSystem.Name);
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.TargetSystem.Stats: " + simGameState.TargetSystem.Stats);
-                Logger.LogLine("[Contract_Begin_PREFIX] simGameState.TargetSystem.Tags: " + simGameState.TargetSystem.Tags);
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.IsCampaign: " + simGameState.IsCampaign);
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.isCareerMode(): " + simGameState.IsCareerMode());
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.TargetSystem.Name: " + simGameState.TargetSystem.Name);
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.TargetSystem.Stats: " + simGameState.TargetSystem.Stats);
+                Logger.Debug("[Contract_Begin_PREFIX] simGameState.TargetSystem.Tags: " + simGameState.TargetSystem.Tags);
 
-                Logger.LogLine("[Contract_Begin_PREFIX] contract.Name: " + __instance.Name);
-                Logger.LogLine("[Contract_Begin_PREFIX] contract.Difficulty: " + __instance.Difficulty);
-                Logger.LogLine("[Contract_Begin_PREFIX] contract.IsStoryContract: " + __instance.IsStoryContract);
+                Logger.Debug("[Contract_Begin_PREFIX] contract.Name: " + __instance.Name);
+                Logger.Debug("[Contract_Begin_PREFIX] contract.Difficulty: " + __instance.Difficulty);
+                Logger.Debug("[Contract_Begin_PREFIX] contract.IsStoryContract: " + __instance.IsStoryContract);
                 */
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -65,32 +65,32 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                Logger.LogLine("----------------------------------------------------------------------------------------------------");
+                Logger.Debug("----------------------------------------------------------------------------------------------------");
 
                 // Ignore untagged (players lance, empty spawnpoints, or manually defined in the contracts json) units
                 if (!__instance.IsUnitDefTagged || !__instance.IsPilotDefTagged)
                 {
-                    //Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsUnitDefTagged: " + __instance.IsUnitDefTagged);
-                    //Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsPilotDefTagged: " + __instance.IsPilotDefTagged);
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Unit or Pilot was either specified exactly via configuration or excluded from spawning. Aborting.");
+                    //Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsUnitDefTagged: " + __instance.IsUnitDefTagged);
+                    //Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsPilotDefTagged: " + __instance.IsPilotDefTagged);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Unit or Pilot was either specified exactly via configuration or excluded from spawning. Aborting.");
                     return;
                 }
 
                 // Ignore all units that are NOT Mechs
                 if (__instance.selectedUnitType != UnitType.Mech)
                 {
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Unit is not a Mech. Aborting.");
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Unit is not a Mech. Aborting.");
                     return;
                 }
 
 
 
                 // Info
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedUnitDefId: " + __instance.selectedUnitDefId);
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedUnitType: " + __instance.selectedUnitType);
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedPilotDefId: " + __instance.selectedPilotDefId);
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedUnitDefId: " + __instance.selectedUnitDefId);
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedUnitType: " + __instance.selectedUnitType);
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedPilotDefId: " + __instance.selectedPilotDefId);
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
 
                 // Prepare vars
                 string selectedMechDefId = __instance.selectedUnitDefId;
@@ -100,21 +100,21 @@ namespace EvenTheOdds.Patches
                 int finalThreatLevel = 0;
 
                 // Get data
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is requested from DataManager...");
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is requested from DataManager...");
                 if (!___dataManager.MechDefs.TryGet(selectedMechDefId, out selectedMechDef))
                 {
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") couldn't get fetched. Aborting.");
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") couldn't get fetched. Aborting.");
                     return;
                 }
                 else
                 {
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") successfully requested. Continuing.");
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") successfully requested. Continuing.");
                 }
 
                 // Check lance info
                 if (Fields.CurrentLanceName != lanceName)
                 {
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Lance (" + lanceName + ") is a new lance, resetting counters");
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Lance (" + lanceName + ") is a new lance, resetting counters");
                     Fields.CurrentLanceName = lanceName;
                     Fields.CurrentLanceCustomUnitCount = 0;
                 }
@@ -129,21 +129,21 @@ namespace EvenTheOdds.Patches
                 // Check for custom units
                 if (selectedMechDef.MechTags.Contains("unit_madlabs"))
                 {
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is a custom unit. Adjusting.");
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is a custom unit. Adjusting.");
 
                     // Count
                     Fields.CurrentLanceCustomUnitCount++;
 
                     // Collect constraints
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.CurrentLanceCustomUnitCount: " + Fields.CurrentLanceCustomUnitCount);
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedCustomUnitsPerLance: " + Fields.MaxAllowedCustomUnitsPerLance);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.CurrentLanceCustomUnitCount: " + Fields.CurrentLanceCustomUnitCount);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedCustomUnitsPerLance: " + Fields.MaxAllowedCustomUnitsPerLance);
 
                     int selectedMechsExtraThreatLevel = Utilities.GetExtraThreatLevelByTag(selectedMechDef.MechTags);
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechsExtraThreatLevel: " + selectedMechsExtraThreatLevel);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechsExtraThreatLevel: " + selectedMechsExtraThreatLevel);
 
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedExtraThreatLevelByProgression: " + Fields.MaxAllowedExtraThreatLevelByProgression);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedExtraThreatLevelByProgression: " + Fields.MaxAllowedExtraThreatLevelByProgression);
                     int allowedExtraThreatLevel = Fields.MaxAllowedExtraThreatLevelByProgression;
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] allowedExtraThreatLevel: " + allowedExtraThreatLevel);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] allowedExtraThreatLevel: " + allowedExtraThreatLevel);
                     
                     // Limit triple PPP Units to X per contract
                     if (selectedMechsExtraThreatLevel == 3 && allowedExtraThreatLevel == 3)
@@ -152,7 +152,7 @@ namespace EvenTheOdds.Patches
 
                         if (Fields.CurrentContractPlusPlusPlusUnits > Fields.MaxAllowedPlusPlusPlusUnitsPerContract)
                         {
-                            Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already pulled a PlusPusPlus Unit, reducing allowedExtraThreatLevel to 2");
+                            Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already pulled a PlusPusPlus Unit, reducing allowedExtraThreatLevel to 2");
                             allowedExtraThreatLevel = 2;
                         }
                     }
@@ -160,10 +160,10 @@ namespace EvenTheOdds.Patches
                     // Limit custom units per lance
                     if (Fields.CurrentLanceCustomUnitCount > Fields.MaxAllowedCustomUnitsPerLance)
                     {
-                        Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already "+ Fields.MaxAllowedCustomUnitsPerLance + " custom units in this lance, reducing allowedExtraThreatLevel to 0");
+                        Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already "+ Fields.MaxAllowedCustomUnitsPerLance + " custom units in this lance, reducing allowedExtraThreatLevel to 0");
                         allowedExtraThreatLevel = 0;
                     }
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] allowedExtraThreatLevel: " + allowedExtraThreatLevel);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] allowedExtraThreatLevel: " + allowedExtraThreatLevel);
 
 
 
@@ -186,7 +186,7 @@ namespace EvenTheOdds.Patches
                 }
                 else
                 {
-                    Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is no custom Unit. Let it pass unchanged...");
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is no custom Unit. Let it pass unchanged...");
                 }
 
 
@@ -203,15 +203,15 @@ namespace EvenTheOdds.Patches
                 // Fire load requests
                 loadRequest.ProcessRequests(1000u);
 
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] CHECK UnitSpawnPointOverride.selectedUnitDefId: " + __instance.selectedUnitDefId);
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] CHECK UnitSpawnPointOverride.selectedUnitType: " + __instance.selectedUnitType);
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] CHECK UnitSpawnPointOverride.selectedPilotDefId: " + __instance.selectedPilotDefId);
-                Logger.LogLine("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] CHECK UnitSpawnPointOverride.selectedUnitDefId: " + __instance.selectedUnitDefId);
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] CHECK UnitSpawnPointOverride.selectedUnitType: " + __instance.selectedUnitType);
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] CHECK UnitSpawnPointOverride.selectedPilotDefId: " + __instance.selectedPilotDefId);
+                Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -224,13 +224,13 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                Logger.LogLine("----------------------------------------------------------------------------------------------------");
-                Logger.LogLine("[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] lanceName: " + lanceName);
-                Logger.LogLine("[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] __result.UnitDefID: " + __result.UnitDefID);
+                Logger.Debug("----------------------------------------------------------------------------------------------------");
+                Logger.Debug("[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] lanceName: " + lanceName);
+                Logger.Debug("[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] __result.UnitDefID: " + __result.UnitDefID);
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }
@@ -243,15 +243,15 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                Logger.LogLine("[UnitSpawnPointGameLogic_SpawnUnit_PREFIX] UnitDefId: " + __instance.UnitDefId);
+                Logger.Debug("[UnitSpawnPointGameLogic_SpawnUnit_PREFIX] UnitDefId: " + __instance.UnitDefId);
                 if (___mechDefOverride != null)
                 {
-                    Logger.LogLine("[UnitSpawnPointGameLogic_SpawnUnit_PREFIX] Overridden with: " + ___mechDefOverride.Description.Id);
+                    Logger.Debug("[UnitSpawnPointGameLogic_SpawnUnit_PREFIX] Overridden with: " + ___mechDefOverride.Description.Id);
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError(e);
+                Logger.Error(e);
             }
         }
     }

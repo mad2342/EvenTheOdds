@@ -18,13 +18,13 @@ namespace EvenTheOdds
             else if (simGameState.SimGameMode == SimGameState.SimGameType.CAREER)
             {
                 int daysPassed = simGameState.DaysPassed;
-                Logger.LogLine("[Utilities.GetNormalizedGlobalDifficulty] daysPassed: " + daysPassed);
+                Logger.Debug("[Utilities.GetNormalizedGlobalDifficulty] daysPassed: " + daysPassed);
 
                 int difficulty = Mathf.FloorToInt(daysPassed / 100);
-                Logger.LogLine("[Utilities.GetNormalizedGlobalDifficulty] difficulty: " + difficulty);
+                Logger.Debug("[Utilities.GetNormalizedGlobalDifficulty] difficulty: " + difficulty);
 
                 int settingsModifier = simGameState.Constants.Story.ContractDifficultyMod;
-                Logger.LogLine("[Utilities.GetNormalizedGlobalDifficulty] settingsModifier: " + settingsModifier);
+                Logger.Debug("[Utilities.GetNormalizedGlobalDifficulty] settingsModifier: " + settingsModifier);
 
                 //@ToDo: Add/Substract modifiers from difficulty settings ("Enemy Force Strength": -1|0|+1)
                 difficulty += settingsModifier;
@@ -33,14 +33,14 @@ namespace EvenTheOdds
             }
             else
             {
-                Logger.LogLine("[Utilities.GetNormalizedGlobalDifficulty] WARNING: Couldn't determine normalized difficulty!");
+                Logger.Debug("[Utilities.GetNormalizedGlobalDifficulty] WARNING: Couldn't determine normalized difficulty!");
                 return 0;
             }
         }
 
         public static int[] GetMaxAllowedContractDifficultyVariances(SimGameState.SimGameType gameMode, TagSet companyTags)
         {
-            //Logger.LogLine("[Utilities.GetMaxAllowedContractDifficultyVariance] companyTags: " + companyTags);
+            //Logger.Debug("[Utilities.GetMaxAllowedContractDifficultyVariance] companyTags: " + companyTags);
 
             // For CAREER mode ContractDifficulty is based purely on starsystem atm...
             if (gameMode == SimGameState.SimGameType.CAREER)
@@ -112,17 +112,17 @@ namespace EvenTheOdds
         {
             string replacementMechDefId = "";
 
-            Logger.LogLine("[Utilities.GetMechDefIdBasedOnSameChassis] Get replacement for chassisID: " + chassisID + " and threatLevel: " + threatLevel);
+            Logger.Debug("[Utilities.GetMechDefIdBasedOnSameChassis] Get replacement for chassisID: " + chassisID + " and threatLevel: " + threatLevel);
 
             // Shortcut for STOCK
             if (threatLevel == 0)
             {
-                Logger.LogLine("[Utilities.GetMechDefIdBasedOnSameChassis] Requested threatlevel is 0. Returning STOCK variant...");
+                Logger.Debug("[Utilities.GetMechDefIdBasedOnSameChassis] Requested threatlevel is 0. Returning STOCK variant...");
                 return chassisID.Replace("chassisdef", "mechdef");
             }
 
             string mechTagForThreatLevel = Utilities.GetMechTagForThreatLevel(threatLevel);
-            Logger.LogLine("[Utilities.GetMechDefIdBasedOnSameChassis] mechTagForThreatLevel: " + mechTagForThreatLevel);
+            Logger.Debug("[Utilities.GetMechDefIdBasedOnSameChassis] mechTagForThreatLevel: " + mechTagForThreatLevel);
 
             List<MechDef> allMechDefs = new List<MechDef>();
             foreach (string key in dm.MechDefs.Keys)
@@ -139,18 +139,18 @@ namespace EvenTheOdds
 
             foreach (string Id in mechDefIdsBasedOnSameChassis)
             {
-                Logger.LogLine("[Utilities.GetMechDefIdBasedOnSameChassis] mechDefIdsBasedOnSameChassis(" + chassisID + "): " + Id);
+                Logger.Debug("[Utilities.GetMechDefIdBasedOnSameChassis] mechDefIdsBasedOnSameChassis(" + chassisID + "): " + Id);
             }
 
             if (mechDefIdsBasedOnSameChassis.Count > 0)
             {
                 mechDefIdsBasedOnSameChassis.Shuffle<string>();
                 replacementMechDefId = mechDefIdsBasedOnSameChassis[0];
-                Logger.LogLine("[Utilities.GetMechDefIdBasedOnSameChassis] replacementMechDefId: " + replacementMechDefId);
+                Logger.Debug("[Utilities.GetMechDefIdBasedOnSameChassis] replacementMechDefId: " + replacementMechDefId);
             }
             else
             {
-                Logger.LogLine("[Utilities.GetMechDefIdBasedOnSameChassis] Couldn't find a replacement. Falling back to STOCK...");
+                Logger.Debug("[Utilities.GetMechDefIdBasedOnSameChassis] Couldn't find a replacement. Falling back to STOCK...");
                 replacementMechDefId = chassisID.Replace("chassisdef", "mechdef");
             }
 
@@ -235,11 +235,11 @@ namespace EvenTheOdds
 
             if (log)
             {
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] componentCount: " + componentCount);
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant: " + componentCountVariant);
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant1: " + componentCountVariant1);
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant2: " + componentCountVariant2);
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant3: " + componentCountVariant3);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] componentCount: " + componentCount);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant: " + componentCountVariant);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant1: " + componentCountVariant1);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant2: " + componentCountVariant2);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] componentCountVariant3: " + componentCountVariant3);
             }
 
             // Threat ranges
@@ -250,10 +250,10 @@ namespace EvenTheOdds
 
             if (log)
             {
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] neutralRange: " + neutralRange);
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] plus1Range: " + plus1Range);
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] plus2Range: " + plus2Range);
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] plus3Range: " + plus3Range);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] neutralRange: " + neutralRange);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] plus1Range: " + plus1Range);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] plus2Range: " + plus2Range);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] plus3Range: " + plus3Range);
             }
 
             // Simple threat classification: Stock gives 1 point, every + adds another
@@ -261,7 +261,7 @@ namespace EvenTheOdds
 
             if (log)
             {
-                Logger.LogLine("[Utilities.GetExtraThreatLevelFromMechDef] componentClassification: " + componentClassification);
+                Logger.Debug("[Utilities.GetExtraThreatLevelFromMechDef] componentClassification: " + componentClassification);
             }
 
             if (plus1Range.ContainsValue(componentClassification))
@@ -292,13 +292,13 @@ namespace EvenTheOdds
                 System.Random rnd = new System.Random();
                 int r = rnd.Next(availablePilotTypes.Count);
 
-                Logger.LogLine("[Utilities.GetPilotTypeForMechDef] Returning random pilotType: " + availablePilotTypes[r]);
+                Logger.Debug("[Utilities.GetPilotTypeForMechDef] Returning random pilotType: " + availablePilotTypes[r]);
                 return availablePilotTypes[r];
             }
 
             if (!MechTags.IsEmpty)
             {
-                Logger.LogLine("[Utilities.GetPilotTypeForMechDef] MechTags: " + MechTags);
+                Logger.Debug("[Utilities.GetPilotTypeForMechDef] MechTags: " + MechTags);
 
                 // unit_lance_support, unit_lance_tank, unit_lance_assassin, unit_lance_vanguard
                 // unit_role_brawler, unit_role_sniper, unit_role_scout
@@ -392,12 +392,12 @@ namespace EvenTheOdds
             {
                 foreach (string Type in appropiatePilotTypes)
                 {
-                    Logger.LogLine("[Utilities.GetPilotTypeForMechDef] appropiatePilotTypes: " + Type);
+                    Logger.Debug("[Utilities.GetPilotTypeForMechDef] appropiatePilotTypes: " + Type);
                 }
                 appropiatePilotTypes.Shuffle<string>();
                 pilotType = appropiatePilotTypes[0];
             }
-            Logger.LogLine("[Utilities.GetPilotTypeForMechDef] Selected pilotType: " + pilotType);
+            Logger.Debug("[Utilities.GetPilotTypeForMechDef] Selected pilotType: " + pilotType);
 
             return pilotType;
         }
@@ -458,7 +458,7 @@ namespace EvenTheOdds
             // If no replacement is appropiate fall back to original PilotDef
             string replacementPilotDefId = currentPilotDefId;
             int currentSkillLevel = Utilities.GetPilotSkillLevel(currentPilotTagSet);
-            Logger.LogLine("[Utilities.GetPilotIdForMechDef] currentSkillLevel: " + currentSkillLevel);
+            Logger.Debug("[Utilities.GetPilotIdForMechDef] currentSkillLevel: " + currentSkillLevel);
 
             int requestedSkillLevel = 0;
             switch (threatLevel)
@@ -476,17 +476,17 @@ namespace EvenTheOdds
                     requestedSkillLevel = 12;
                     break;
             }
-            Logger.LogLine("[Utilities.GetPilotIdForMechDef] requestedSkillLevel: " + requestedSkillLevel);
+            Logger.Debug("[Utilities.GetPilotIdForMechDef] requestedSkillLevel: " + requestedSkillLevel);
 
             // Specialization starts at difficulty of 7
             if (requestedSkillLevel > 7 && requestedSkillLevel > currentSkillLevel)
             {
                 string pilotSpecialization = Utilities.GetPilotTypeForMechDef(mechDef);
-                Logger.LogLine("[Utilities.GetPilotIdForMechDef] pilotSpecialization: " + pilotSpecialization);
+                Logger.Debug("[Utilities.GetPilotIdForMechDef] pilotSpecialization: " + pilotSpecialization);
                 replacementPilotDefId = Utilities.BuildPilotDefIdFromSkillAndSpec(requestedSkillLevel, pilotSpecialization);
             }
 
-            Logger.LogLine("[Utilities.GetPilotIdForMechDef] replacementPilotDefId: " + replacementPilotDefId);
+            Logger.Debug("[Utilities.GetPilotIdForMechDef] replacementPilotDefId: " + replacementPilotDefId);
             return replacementPilotDefId;
         }
     }
