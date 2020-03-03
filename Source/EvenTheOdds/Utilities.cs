@@ -76,7 +76,7 @@ namespace EvenTheOdds
             }
             else if (globalDifficulty >= 7)
             {
-             return 2;
+                return 2;
             }
             else if (globalDifficulty >= 4)
             {
