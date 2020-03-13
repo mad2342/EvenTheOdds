@@ -49,11 +49,16 @@ namespace EvenTheOdds.Patches
 
                 // Minimum chance by setting
                 //float keepInitialRareWeaponChanceMin = Fields.KeepInitialRareWeaponChanceMin;
+                
                 // Minimum chance by contract difficulty
-                float keepInitialRareWeaponChanceMin = (float)contractDifficulty / 100;
+                //float keepInitialRareWeaponChanceMin = (float)contractDifficulty / 100;
+                
+                // Minimum chance by global difficulty
+                float keepInitialRareWeaponChanceMin = Utilities.GetNormalizedGlobalDifficulty(simGameState) / 100;
+
                 Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceMin: " + keepInitialRareWeaponChanceMin);
                 // Borrowed from Contract.AddWeaponToSalvage()
-                float keepInitialRareWeaponChanceProgression = ((float)contractDifficulty + simGameConstants.Salvage.VeryRareWeaponChance) / simGameConstants.Salvage.WeaponChanceDivisor;
+                float keepInitialRareWeaponChanceProgression = ((float)contractDifficulty + simGameConstants.Salvage.RareWeaponChance) / simGameConstants.Salvage.WeaponChanceDivisor;
                 Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceProgression: " + keepInitialRareWeaponChanceProgression);
                 float keepInitialRareWeaponChance = Math.Max(keepInitialRareWeaponChanceMin, keepInitialRareWeaponChanceProgression);
                 Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChance: " + keepInitialRareWeaponChance);
