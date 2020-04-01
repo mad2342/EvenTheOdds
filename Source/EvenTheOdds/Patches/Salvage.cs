@@ -27,6 +27,12 @@ namespace EvenTheOdds.Patches
                     return false;
                 }
 
+                // Blacklisted
+                if (def.ComponentTags.Contains("BLACKLISTED"))
+                {
+                    return true;
+                }
+
                 // Only touch weapons for now
                 if (def.ComponentType != ComponentType.Weapon)
                 {
@@ -77,9 +83,10 @@ namespace EvenTheOdds.Patches
                 // Resetting rare weapon to its stock version if above check to potentially keep it fails
                 WeaponDef weaponDef = def as WeaponDef;
                 string weaponOriginalId = def.Description.Id;
-                //Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponOriginalId + ") is going to be replaced by its stock version");
+
+                // @ToDo: Note that the new HM compentents don't always follow this scheme... :-\ Adapt!
                 string weaponStockId = def.ComponentType.ToString() + "_" + weaponDef.Type.ToString() + "_" + weaponDef.WeaponSubType.ToString() + "_0-STOCK";
-                //Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponStockId + ") is current weapons stock version");
+
 
                 // Set
                 def = ___dataManager.WeaponDefs.Get(weaponStockId);

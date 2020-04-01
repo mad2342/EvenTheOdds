@@ -38,6 +38,8 @@ namespace EvenTheOdds
             }
         }
 
+
+
         public static int[] GetMaxAllowedContractDifficultyVariances(SimGameState.SimGameType gameMode, TagSet companyTags)
         {
             //Logger.Debug("[Utilities.GetMaxAllowedContractDifficultyVariance] companyTags: " + companyTags);
@@ -67,6 +69,8 @@ namespace EvenTheOdds
             }
         }
 
+
+
         public static int GetMaxAllowedCustomUnitsByProgression(int globalDifficulty)
         {
             // A global difficulty of 9+ is only possible with setting "Enemy Force Strength" to "Hard" in Game Options
@@ -88,6 +92,8 @@ namespace EvenTheOdds
             }
         }
 
+
+
         public static int GetMaxAllowedExtraThreatLevelByProgression(int daysPassed, TagSet companyTags)
         {
             if (companyTags.Contains("story_complete") || daysPassed > 900)
@@ -107,6 +113,8 @@ namespace EvenTheOdds
                 return 0;
             }
         }
+
+
 
         public static string GetMechDefIdBasedOnSameChassis(string chassisID, int threatLevel, DataManager dm)
         {
@@ -157,6 +165,8 @@ namespace EvenTheOdds
             return replacementMechDefId;
         }
 
+
+
         public static string GetMechTagForThreatLevel(int threatLevel)
         {
             switch(threatLevel)
@@ -171,6 +181,7 @@ namespace EvenTheOdds
                     return "unit_components_neutral";
             }
         }
+
 
 
         public static int GetExtraThreatLevelByTag(TagSet mechTags)
@@ -193,6 +204,9 @@ namespace EvenTheOdds
             }
         }
 
+
+
+        // For reference, not used atm
         public static int GetExtraThreatLevelFromMechDef(MechDef mechDef, bool log = false)
         {
             int result = 0;
@@ -279,6 +293,8 @@ namespace EvenTheOdds
 
             return result;
         }
+
+
 
         public static string GetPilotTypeForMechDef(MechDef mechDef, bool random = false)
         {
@@ -402,6 +418,8 @@ namespace EvenTheOdds
             return pilotType;
         }
 
+
+
         public static int GetPilotSkillLevel(TagSet pilotTagSet)
         {
             if (pilotTagSet.Contains("pilot_npc_d10"))
@@ -448,10 +466,14 @@ namespace EvenTheOdds
             return 7;
         }
 
+
+
         public static string BuildPilotDefIdFromSkillAndSpec(int skillLevel, string pilotSpecialization)
         {
             return "pilot_d" + skillLevel + "_" + pilotSpecialization;
         }
+
+
 
         public static string GetPilotIdForMechDef(MechDef mechDef, string currentPilotDefId, TagSet currentPilotTagSet, int threatLevel, int minimumSkillLevel)
         {

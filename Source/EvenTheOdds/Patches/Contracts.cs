@@ -36,7 +36,7 @@ namespace EvenTheOdds.Patches
             Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] minDiff: " + minDiff);
             Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] maxDiff: " + maxDiff);
 
-            // Skip original method as it would override minDiff/maxDiff again (of course)
+            // Skip original method as it would override minDiff/maxDiff again
             return false;
         }
     }
