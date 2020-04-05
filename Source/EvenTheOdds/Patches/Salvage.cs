@@ -8,7 +8,7 @@ using BattleTech.Data;
 namespace EvenTheOdds.Patches
 {
     // Try to limit the amount of plus weapons in salvage
-    // In Vanilla the OpFor *never* fields Mechs with rare weapons, these get generated on salvage creation
+    // In Vanilla the OpFor almost *never* fields Mechs with rare weapons, these get generated on salvage creation
     [HarmonyPatch(typeof(Contract), "AddMechComponentToSalvage")]
     public static class Contract_AddMechComponentToSalvage_Patch
     {
@@ -23,16 +23,14 @@ namespace EvenTheOdds.Patches
                 // Rare upgrades will still be added to salvage by Vanillas Replacement-RNG on anything non-weapon
                 if (def.ComponentType == ComponentType.Upgrade)
                 {
-                    Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] Component is an upgrade, skipping original method (BUT STILL calling Postfixes if existent!)");
+                    Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] Component is an upgrade, skipping original method");
                     return false;
                 }
-
-                // Blacklisted
+                // Ignore blacklisted components
                 if (def.ComponentTags.Contains("BLACKLISTED"))
                 {
                     return true;
                 }
-
                 // Only touch weapons for now
                 if (def.ComponentType != ComponentType.Weapon)
                 {
@@ -51,44 +49,42 @@ namespace EvenTheOdds.Patches
                 SimGameState simGameState = __instance.BattleTechGame.Simulation;
                 SimGameConstants simGameConstants = simGameState.Constants;
                 int contractDifficulty = __instance.Override.finalDifficulty;
+                int globalDifficulty = Utilities.GetNormalizedGlobalDifficulty(simGameState);
+                Logger.Info($"[Contract_AddMechComponentToSalvage_PREFIX] contractDifficulty: {contractDifficulty}, globalDifficulty: {globalDifficulty}");
 
 
-                // Minimum chance by setting
-                //float keepInitialRareWeaponChanceMin = Fields.KeepInitialRareWeaponChanceMin;
-                
-                // Minimum chance by contract difficulty
-                //float keepInitialRareWeaponChanceMin = (float)contractDifficulty / 100;
-                
-                // Minimum chance by global difficulty
-                float keepInitialRareWeaponChanceMin = Utilities.GetNormalizedGlobalDifficulty(simGameState) / 100;
+                // Respect difficulty setting "No Rare Salvage" in here too...
+                //Logger.Info($"[Contract_AddMechComponentToSalvage_PREFIX] simGameConstants.Salvage.RareWeaponChance: {simGameConstants.Salvage.RareWeaponChance}");
+                //Logger.Info($"[Contract_AddMechComponentToSalvage_PREFIX] simGameConstants.Salvage.VeryRareWeaponChance: {simGameConstants.Salvage.VeryRareWeaponChance}");
+                bool rareSalvageEnabled = simGameConstants.Salvage.RareWeaponChance > -10f;
+                Logger.Debug($"[Contract_AddMechComponentToSalvage_PREFIX] rareSalvageEnabled: {rareSalvageEnabled}");
 
-                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceMin: " + keepInitialRareWeaponChanceMin);
-                // Borrowed from Contract.AddWeaponToSalvage()
-                float keepInitialRareWeaponChanceProgression = ((float)contractDifficulty + simGameConstants.Salvage.RareWeaponChance) / simGameConstants.Salvage.WeaponChanceDivisor;
-                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChanceProgression: " + keepInitialRareWeaponChanceProgression);
-                float keepInitialRareWeaponChance = Math.Max(keepInitialRareWeaponChanceMin, keepInitialRareWeaponChanceProgression);
-                Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] keepInitialRareWeaponChance: " + keepInitialRareWeaponChance);
-
-
-                float keepInitialRareWeaponRoll = simGameState.NetworkRandom.Float(0f, 1f);
-                bool keepInitialRareWeapon = keepInitialRareWeaponRoll < keepInitialRareWeaponChance;
-
-                // Currently handled rare weapons should pass into original method as is
-                if (keepInitialRareWeapon)
+                if (rareSalvageEnabled)
                 {
-                    Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + def.Description.Id + ") passes into original method");
-                    return true;
+                    // Minimum chance to keep this rare weapon by settings + (contract difficulty OR global difficulty, whatever is higher), max 80%
+                    int bonus = Math.Max(contractDifficulty, globalDifficulty);
+                    float chance = Math.Min(EvenTheOdds.Settings.SalvageHighQualityWeaponsBaseChancePercent + bonus, 80) / 100f;
+                    float roll = simGameState.NetworkRandom.Float(0f, 1f);
+                    bool keep = roll < chance;
+                    Logger.Info($"[Contract_AddMechComponentToSalvage_PREFIX] ({def.Description.Id}) chance({chance}) against roll({roll}) to keep: {keep}");
+
+                    // Currently handled rare weapons should pass into original method as is
+                    if (keep)
+                    {
+                        Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + def.Description.Id + ") passes into original method");
+                        return true;
+                    }
                 }
 
-                // Resetting rare weapon to its stock version if above check to potentially keep it fails
+
+                // Resetting rare weapon to its stock version if above checks to potentially keep it fails
                 WeaponDef weaponDef = def as WeaponDef;
                 string weaponOriginalId = def.Description.Id;
 
-                // @ToDo: Note that the new HM compentents don't always follow this scheme... :-\ Adapt!
+                // Note that the "Heavy Metal" weapons don't follow this scheme. But as they're all blacklisted they should never end up down here
                 string weaponStockId = def.ComponentType.ToString() + "_" + weaponDef.Type.ToString() + "_" + weaponDef.WeaponSubType.ToString() + "_0-STOCK";
 
-
-                // Set
+                // Set to stock
                 def = ___dataManager.WeaponDefs.Get(weaponStockId);
                 Logger.Debug("[Contract_AddMechComponentToSalvage_PREFIX] (" + weaponOriginalId + ") was replaced with stock version (" + def.Description.Id + ")");
 
@@ -106,33 +102,33 @@ namespace EvenTheOdds.Patches
         {
             try
             {
-                //Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] Checking def: " + def.Description.Id);
-
-                // Apart from MechComponents also MechParts fill this List
-                //Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] ___finalPotentialSalvage.Count: " + ___finalPotentialSalvage.Count);
-
                 // If prefix returns false this is empty on first call. Need to check first
                 if (___finalPotentialSalvage != null && ___finalPotentialSalvage.Count > 0)
                 {
+                    // This item was just added by original method
                     SalvageDef lastAddedSalvageItem = ___finalPotentialSalvage.Last();
                     MechComponentDef lastAddedMechComponent = lastAddedSalvageItem.MechComponentDef ?? null;
+                    
+                    // Only check components (ignore MechParts), and ignore upgrades/blacklisted components
+                    if (lastAddedMechComponent == null || def.ComponentType == ComponentType.Upgrade || def.ComponentTags.Contains("BLACKLISTED"))
+                    {
+                        return;
+                    }
 
-                    // Check only rare weapons
+                    // Check for rare weapons
                     if (def.ComponentType == ComponentType.Weapon && def.Description.Rarity > 0)
                     {
-                        Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") passed into original method");
+                        Logger.Info("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") passed into original method");
                     }
-                    // Check if method DID transform components
-                    if (lastAddedMechComponent != null && (def.Description.Id != lastAddedMechComponent.Description.Id))
+
+                    // Check if vanilla replacement rng DID transform components
+                    if (def.Description.Id != lastAddedMechComponent.Description.Id)
                     {
-                        Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") was changed to (" + lastAddedMechComponent.Description.Id + ")");
+                        Logger.Info("[Contract_AddMechComponentToSalvage_POSTFIX] (" + def.Description.Id + ") was changed to (" + lastAddedMechComponent.Description.Id + ")");
                     }
-                    // Check all final salvage
-                    if (lastAddedMechComponent != null)
-                    //if (lastAddedMechComponent != null && lastAddedMechComponent.Description.Rarity > 0)
-                    {
-                        Logger.Debug("[Contract_AddMechComponentToSalvage_POSTFIX] (" + lastAddedMechComponent.Description.Id + ") was added to salvage");
-                    }
+
+                    // Check final salvage for components
+                    Logger.Info("[Contract_AddMechComponentToSalvage_POSTFIX] (" + lastAddedMechComponent.Description.Id + ") was added to salvage");
                 }
             }
             catch (Exception e)
@@ -141,6 +137,8 @@ namespace EvenTheOdds.Patches
             }
         }
     }
+
+
 
     // Normalize MechParts for Salvage (Replacing custom MechDefs with Stock) 
     // Otherwise each different MechDef gets their own MechPart-Stack in the Mechbay...
@@ -163,7 +161,7 @@ namespace EvenTheOdds.Patches
                     //SimGameState simGameState = __instance.BattleTechGame.Simulation;
                     string currentMechDefId = m.Description.Id;
                     string stockMechDefId = m.ChassisID.Replace("chassisdef", "mechdef");
-                    
+
                     // Replace
                     m = ___dataManager.MechDefs.Get(stockMechDefId);
                     Logger.Debug("[Contract_CreateAndAddMechPart_PREFIX] MechDef (" + currentMechDefId + ") was replaced with stock version (" + m.Description.Id + ")");

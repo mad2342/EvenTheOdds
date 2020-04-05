@@ -26,27 +26,30 @@ namespace EvenTheOdds.Patches
                 Logger.Debug("[Contract_Begin_PREFIX] simGameState.DaysPassed: " + simGameState.DaysPassed);
                 Logger.Debug("[Contract_Begin_PREFIX] simGameState.GlobalDifficulty: " + simGameState.GlobalDifficulty);
 
-                //Fields.GlobalDifficulty = (int)simGameState.GlobalDifficulty;
+
                 Fields.GlobalDifficulty = Utilities.GetNormalizedGlobalDifficulty(simGameState);
                 Logger.Debug("[Contract_Begin_PREFIX] Fields.GlobalDifficulty: " + Fields.GlobalDifficulty);
 
-                Fields.CurrentContractPlusPlusPlusUnits = 0;
+                // Reset counter
+                Fields.CurrentContractEliteUnits = 0;
 
-                Fields.MaxAllowedExtraThreatLevelByProgression = Utilities.GetMaxAllowedExtraThreatLevelByProgression(simGameState.DaysPassed, simGameState.CompanyTags);
-                Fields.MaxAllowedCustomUnitsPerLance = Utilities.GetMaxAllowedCustomUnitsByProgression(Fields.GlobalDifficulty);
-                Logger.Debug("[Contract_Begin_PREFIX] Fields.MaxAllowedExtraThreatLevelByProgression: " + Fields.MaxAllowedExtraThreatLevelByProgression);
-                Logger.Debug("[Contract_Begin_PREFIX] Fields.MaxAllowedCustomUnitsPerLance: " + Fields.MaxAllowedCustomUnitsPerLance);
+                Fields.MaxThreatLevelByProgression = Utilities.GetMaxThreatLevelByProgression(Fields.GlobalDifficulty);
+                Fields.MaxCustomUnitsPerLance = Utilities.GetMaxCustomUnitsPerLance(Fields.GlobalDifficulty);
+                //Fields.MaxEliteUnitsPerContract = Utilities.GetMaxEliteUnitsPerContract(Fields.GlobalDifficulty);
+                Logger.Debug("[Contract_Begin_PREFIX] Fields.MaxThreatLevelByProgression: " + Fields.MaxThreatLevelByProgression);
+                Logger.Debug("[Contract_Begin_PREFIX] Fields.MaxCustomUnitsPerLance: " + Fields.MaxCustomUnitsPerLance);
+                Logger.Debug("[Contract_Begin_PREFIX] Fields.MaxEliteUnitsPerContract: " + Fields.MaxEliteUnitsPerContract);
 
                 /*
-                Logger.Debug("[Contract_Begin_PREFIX] simGameState.IsCampaign: " + simGameState.IsCampaign);
-                Logger.Debug("[Contract_Begin_PREFIX] simGameState.isCareerMode(): " + simGameState.IsCareerMode());
-                Logger.Debug("[Contract_Begin_PREFIX] simGameState.TargetSystem.Name: " + simGameState.TargetSystem.Name);
-                Logger.Debug("[Contract_Begin_PREFIX] simGameState.TargetSystem.Stats: " + simGameState.TargetSystem.Stats);
-                Logger.Debug("[Contract_Begin_PREFIX] simGameState.TargetSystem.Tags: " + simGameState.TargetSystem.Tags);
+                Logger.Info("[Contract_Begin_PREFIX] simGameState.IsCampaign: " + simGameState.IsCampaign);
+                Logger.Info("[Contract_Begin_PREFIX] simGameState.isCareerMode(): " + simGameState.IsCareerMode());
+                Logger.Info("[Contract_Begin_PREFIX] simGameState.TargetSystem.Name: " + simGameState.TargetSystem.Name);
+                Logger.Info("[Contract_Begin_PREFIX] simGameState.TargetSystem.Stats: " + simGameState.TargetSystem.Stats);
+                Logger.Info("[Contract_Begin_PREFIX] simGameState.TargetSystem.Tags: " + simGameState.TargetSystem.Tags);
 
-                Logger.Debug("[Contract_Begin_PREFIX] contract.Name: " + __instance.Name);
-                Logger.Debug("[Contract_Begin_PREFIX] contract.Difficulty: " + __instance.Difficulty);
-                Logger.Debug("[Contract_Begin_PREFIX] contract.IsStoryContract: " + __instance.IsStoryContract);
+                Logger.Info("[Contract_Begin_PREFIX] contract.Name: " + __instance.Name);
+                Logger.Info("[Contract_Begin_PREFIX] contract.Difficulty: " + __instance.Difficulty);
+                Logger.Info("[Contract_Begin_PREFIX] contract.IsStoryContract: " + __instance.IsStoryContract);
                 */
             }
             catch (Exception e)
@@ -70,8 +73,8 @@ namespace EvenTheOdds.Patches
                 // Ignore untagged (players lance, empty spawnpoints, or manually defined in the contracts json) units
                 if (!__instance.IsUnitDefTagged || !__instance.IsPilotDefTagged)
                 {
-                    //Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsUnitDefTagged: " + __instance.IsUnitDefTagged);
-                    //Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsPilotDefTagged: " + __instance.IsPilotDefTagged);
+                    //Logger.Info("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsUnitDefTagged: " + __instance.IsUnitDefTagged);
+                    //Logger.Info("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.IsPilotDefTagged: " + __instance.IsPilotDefTagged);
                     Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Unit or Pilot was either specified exactly via configuration or excluded from spawning. Aborting.");
                     return;
                 }
@@ -83,8 +86,6 @@ namespace EvenTheOdds.Patches
                     return;
                 }
 
-
-
                 // Info
                 Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
                 Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedUnitDefId: " + __instance.selectedUnitDefId);
@@ -92,12 +93,14 @@ namespace EvenTheOdds.Patches
                 Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] UnitSpawnPointOverride.selectedPilotDefId: " + __instance.selectedPilotDefId);
                 Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] ---");
 
+
+
                 // Prepare vars
                 string selectedMechDefId = __instance.selectedUnitDefId;
                 MechDef selectedMechDef = null;
                 string replacementMechDefId = "";
                 string replacementPilotDefId = "";
-                int finalThreatLevel = 0;
+                int mechThreatLevel = 0;
 
                 // Get data
                 Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is requested from DataManager...");
@@ -129,59 +132,61 @@ namespace EvenTheOdds.Patches
                 // Check for custom units
                 if (selectedMechDef.MechTags.Contains("unit_madlabs"))
                 {
-                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is a custom unit. Adjusting.");
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechDefId(" + selectedMechDefId + ") is a custom unit and thus needs adjustment");
 
                     // Count
                     Fields.CurrentLanceCustomUnitCount++;
 
                     // Collect constraints
                     Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.CurrentLanceCustomUnitCount: " + Fields.CurrentLanceCustomUnitCount);
-                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedCustomUnitsPerLance: " + Fields.MaxAllowedCustomUnitsPerLance);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxCustomUnitsPerLance: " + Fields.MaxCustomUnitsPerLance);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.CurrentContractEliteUnits: " + Fields.CurrentContractEliteUnits);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxEliteUnitsPerContract: " + Fields.MaxEliteUnitsPerContract);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxThreatLevelByProgression: " + Fields.MaxThreatLevelByProgression);
 
-                    int selectedMechsExtraThreatLevel = Utilities.GetExtraThreatLevelByTag(selectedMechDef.MechTags);
-                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechsExtraThreatLevel: " + selectedMechsExtraThreatLevel);
+                    int selectedMechsThreatLevel = Utilities.GetThreatLevelByTag(selectedMechDef.MechTags);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] selectedMechsThreatLevel: " + selectedMechsThreatLevel);
 
-                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Fields.MaxAllowedExtraThreatLevelByProgression: " + Fields.MaxAllowedExtraThreatLevelByProgression);
-                    int allowedExtraThreatLevel = Fields.MaxAllowedExtraThreatLevelByProgression;
-                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] allowedExtraThreatLevel: " + allowedExtraThreatLevel);
+                    int maxThreatLevel = Fields.MaxThreatLevelByProgression;
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] maxThreatLevel: " + maxThreatLevel);
                     
-                    // Limit triple PPP Units to X per contract
-                    if (selectedMechsExtraThreatLevel == 3 && allowedExtraThreatLevel == 3)
+                    // Limit elite units per contract
+                    if (selectedMechsThreatLevel == 3 && maxThreatLevel == 3)
                     {
-                        Fields.CurrentContractPlusPlusPlusUnits++;
+                        Fields.CurrentContractEliteUnits++;
 
-                        if (Fields.CurrentContractPlusPlusPlusUnits > Fields.MaxAllowedPlusPlusPlusUnitsPerContract)
+                        if (Fields.CurrentContractEliteUnits > Fields.MaxEliteUnitsPerContract)
                         {
-                            Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already pulled a PlusPusPlus Unit, reducing allowedExtraThreatLevel to 2");
-                            allowedExtraThreatLevel = 2;
+                            Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already pulled an elite unit, reducing maxThreatLevel to 2");
+                            maxThreatLevel = 2;
                         }
                     }
                     
                     // Limit custom units per lance
-                    if (Fields.CurrentLanceCustomUnitCount > Fields.MaxAllowedCustomUnitsPerLance)
+                    if (Fields.CurrentLanceCustomUnitCount > Fields.MaxCustomUnitsPerLance)
                     {
-                        Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already "+ Fields.MaxAllowedCustomUnitsPerLance + " custom units in this lance, reducing allowedExtraThreatLevel to 0");
-                        allowedExtraThreatLevel = 0;
+                        Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] Already "+ Fields.MaxCustomUnitsPerLance + " custom units in this lance, reducing maxThreatLevel to 0");
+                        maxThreatLevel = 0;
                     }
-                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] allowedExtraThreatLevel: " + allowedExtraThreatLevel);
+                    Logger.Debug("[UnitSpawnPointOverride_GenerateUnit_POSTFIX] maxThreatLevel: " + maxThreatLevel);
 
 
 
                     // Replace if necessary
-                    if (selectedMechsExtraThreatLevel > allowedExtraThreatLevel)
+                    if (selectedMechsThreatLevel > maxThreatLevel)
                     {
                         // Replace with less powerful version of the same Mech (Fallback to STOCK included)
-                        replacementMechDefId = Utilities.GetMechDefIdBasedOnSameChassis(selectedMechDef.ChassisID, allowedExtraThreatLevel, ___dataManager);
+                        replacementMechDefId = Utilities.GetMechDefIdBasedOnSameChassis(selectedMechDef.ChassisID, maxThreatLevel, ___dataManager);
                         __instance.selectedUnitDefId = replacementMechDefId;
 
-                        finalThreatLevel = allowedExtraThreatLevel;
+                        mechThreatLevel = maxThreatLevel;
 
                         // Add to load request
                         loadRequest.AddBlindLoadRequest(BattleTechResourceType.MechDef, __instance.selectedUnitDefId, new bool?(false));
                     }
                     else
                     {
-                        finalThreatLevel = selectedMechsExtraThreatLevel;
+                        mechThreatLevel = selectedMechsThreatLevel;
                     }
                 }
                 else
@@ -191,8 +196,8 @@ namespace EvenTheOdds.Patches
 
 
 
-                // Pilot handling
-                replacementPilotDefId = Utilities.GetPilotIdForMechDef(selectedMechDef, __instance.selectedPilotDefId, __instance.pilotTagSet, finalThreatLevel, Fields.GlobalDifficulty);
+                // Pilot handling (will also potentially place better pilots in stock and light mechs in late game)
+                replacementPilotDefId = Utilities.GetPilotIdForMechDef(selectedMechDef, __instance.selectedPilotDefId, __instance.pilotTagSet, mechThreatLevel, Fields.GlobalDifficulty);
                 __instance.selectedPilotDefId = replacementPilotDefId;
 
                 // Add new pilot to load request

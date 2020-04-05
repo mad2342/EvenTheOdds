@@ -6,26 +6,21 @@ using UnityEngine;
 
 namespace EvenTheOdds.Patches
 {
-
     // Dynamic ContractDifficultyVariance
     [HarmonyPatch(typeof(SimGameState), "GetDifficultyRangeForContract")]
     public static class SimGameState_GetDifficultyRangeForContract_Patch
     {
         public static bool Prepare()
         {
-            return EvenTheOdds.EnableDynamicContractDifficultyVariance;
+            return EvenTheOdds.Settings.EnableDynamicContractDifficultyVariance;
         }
 
         public static bool Prefix(SimGameState __instance, int baseDiff, out int minDiff, out int maxDiff)
         {
             Logger.Debug("----------------------------------------------------------------------------------------------------");
             Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] SimGameState.Constants.Story.ContractDifficultyVariance: " + __instance.Constants.Story.ContractDifficultyVariance);
-            
-            //int overrideContractDifficultyVariance = Utilities.GetMaxAllowedContractDifficultyVariance(__instance.SimGameMode, __instance.CompanyTags);
-            //Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariance: " + overrideContractDifficultyVariance);
-            //__instance.Constants.Story.ContractDifficultyVariance = overrideContractDifficultyVariance;
 
-            int[] overrideContractDifficultyVariances = Utilities.GetMaxAllowedContractDifficultyVariances(__instance.SimGameMode, __instance.CompanyTags);
+            int[] overrideContractDifficultyVariances = Utilities.GetContractDifficultyVariances(__instance.SimGameMode, __instance.CompanyTags);
             Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariances[0]: " + overrideContractDifficultyVariances[0]);
             Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] overrideContractDifficultyVariances[1]: " + overrideContractDifficultyVariances[1]);
 
@@ -36,10 +31,12 @@ namespace EvenTheOdds.Patches
             Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] minDiff: " + minDiff);
             Logger.Debug("[SimGameState_GetDifficultyRangeForContract_PREFIX] maxDiff: " + maxDiff);
 
-            // Skip original method as it would override minDiff/maxDiff again
+            // Skip original method...
             return false;
         }
     }
+
+
 
     // Info
     [HarmonyPatch(typeof(StarSystem), "GetSystemMaxContracts")]
@@ -53,6 +50,8 @@ namespace EvenTheOdds.Patches
             Logger.Debug("[StarSystem_GetSystemMaxContracts_POSTFIX] StarSystem.Sim.Constants.Story.MaxContractsPerSystem: " + __instance.Sim.Constants.Story.MaxContractsPerSystem);
         }
     }
+
+
 
     // Info
     [HarmonyPatch(typeof(SimGameState), "GetAllCurrentlySelectableContracts")]
@@ -72,7 +71,7 @@ namespace EvenTheOdds.Patches
                 int currentSystemDifficulty = __instance.CurSystem.Def.GetDifficulty(__instance.SimGameMode);
                 int globalDifficulty = Mathf.FloorToInt(__instance.GlobalDifficulty);
                 int baseDifficulty = currentSystemDifficulty + globalDifficulty;
-                int[] contractDifficultyVariances = Utilities.GetMaxAllowedContractDifficultyVariances(__instance.SimGameMode, __instance.CompanyTags);
+                int[] contractDifficultyVariances = Utilities.GetContractDifficultyVariances(__instance.SimGameMode, __instance.CompanyTags);
                 int minDifficulty = Mathf.Max(1, baseDifficulty - contractDifficultyVariances[0]);
                 int maxDifficulty = Mathf.Max(1, baseDifficulty + contractDifficultyVariances[1]);
 
