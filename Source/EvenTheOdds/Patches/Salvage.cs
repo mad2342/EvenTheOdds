@@ -61,8 +61,8 @@ namespace EvenTheOdds.Patches
 
                 if (rareSalvageEnabled)
                 {
-                    // Minimum chance to keep this rare weapon by settings + (contract difficulty OR global difficulty, whatever is higher), max 80%
-                    int bonus = Math.Max(contractDifficulty, globalDifficulty);
+                    // Minimum chance to keep this rare weapon by settings + (contract difficulty OR global difficulty (whatever is higher) multiplied by mod-difficulty), max 80%
+                    int bonus = Math.Max(contractDifficulty, globalDifficulty) * EvenTheOdds.Settings.Difficulty;
                     float chance = Math.Min(EvenTheOdds.Settings.SalvageHighQualityWeaponsBaseChancePercent + bonus, 80) / 100f;
                     float roll = simGameState.NetworkRandom.Float(0f, 1f);
                     bool keep = roll < chance;
