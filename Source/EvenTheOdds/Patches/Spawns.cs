@@ -253,6 +253,7 @@ namespace EvenTheOdds.Patches
                 {
                     Logger.Debug("[UnitSpawnPointGameLogic_SpawnUnit_PREFIX] Overridden with: " + ___mechDefOverride.Description.Id);
                 }
+                Logger.Debug("[UnitSpawnPointGameLogic_SpawnUnit_PREFIX] pilotDefId: " + __instance.pilotDefId);
             }
             catch (Exception e)
             {
