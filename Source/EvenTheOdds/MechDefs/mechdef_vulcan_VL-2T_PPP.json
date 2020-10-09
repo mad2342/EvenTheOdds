@@ -174,7 +174,7 @@
     },
     {
       "MountedLocation": "RightTorso",
-      "ComponentDefID": "Weapon_Autocannon_AC2_3-Kali_Yama",
+      "ComponentDefID": "Weapon_Autocannon_AC2_3-Imperator",
       "SimGameUID": null,
       "ComponentDefType": "Weapon",
       "HardpointSlot": 0,
@@ -196,7 +196,7 @@
     },
     {
       "MountedLocation": "RightTorso",
-      "ComponentDefID": "Weapon_Laser_SmallLaser_3-Diverse_Optics",
+      "ComponentDefID": "Weapon_Laser_SmallLaser_3-Intek",
       "SimGameUID": null,
       "ComponentDefType": "Weapon",
       "HardpointSlot": 1,
@@ -207,7 +207,7 @@
     },
     {
       "MountedLocation": "LeftTorso",
-      "ComponentDefID": "Weapon_Laser_SmallLaser_3-Diverse_Optics",
+      "ComponentDefID": "Weapon_Laser_SmallLaser_3-Intek",
       "SimGameUID": null,
       "ComponentDefType": "Weapon",
       "HardpointSlot": 1,
