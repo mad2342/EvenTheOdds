@@ -34,10 +34,11 @@
   },
   "simGameMechPartCost": 654000,
   "RequiredToSpawnCompanyTags": {
-    "items": [],
-    "tagSetSourceFile": ""
+    "items": [
+	  "flashpoint_longRoad_complete"
+    ]
   },
-  "MinAppearanceDate": null,
+  "MinAppearanceDate": "3025-06-28T00:00:00Z",
   "Version": 1,
   "Locations": [
     {

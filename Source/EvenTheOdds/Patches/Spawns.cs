@@ -225,13 +225,22 @@ namespace EvenTheOdds.Patches
     [HarmonyPatch(typeof(UnitSpawnPointOverride), "SelectTaggedUnitDef")]
     public static class UnitSpawnPointOverride_SelectTaggedUnitDef_Patch
     {
-        public static void Postfix(UnitSpawnPointOverride __instance, UnitDef_MDD __result, MetadataDatabase mdd, TagSet unitTagSet, TagSet unitExcludedTagSet, string lanceName)
+        public static void Postfix(UnitSpawnPointOverride __instance, UnitDef_MDD __result, MetadataDatabase mdd, TagSet unitTagSet, TagSet unitExcludedTagSet, string lanceName, TagSet companyTags)
         {
             try
             {
                 Logger.Debug("----------------------------------------------------------------------------------------------------");
                 Logger.Debug("[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] lanceName: " + lanceName);
                 Logger.Debug("[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] __result.UnitDefID: " + __result.UnitDefID);
+
+                /*
+                Logger.Debug($"[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] __result.GetRequiredToSpawnCompanyTagSet(): { String.Join(", ", __result.GetRequiredToSpawnCompanyTagSet().ToArray())}");
+                Logger.Debug($"[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] companyTags: { String.Join(", ", companyTags.ToArray())}");
+                if (companyTags != null && !companyTags.ContainsAll(__result.GetRequiredToSpawnCompanyTagSet()))
+                {
+                    Logger.Debug($"[UnitSpawnPointOverride_SelectTaggedUnitDef_POSTFIX] WARNING: {__result.UnitDefID} should NOT spawn yet!");
+                }
+                */
             }
             catch (Exception e)
             {
